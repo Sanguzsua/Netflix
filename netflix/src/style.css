@@ -1,0 +1,179 @@
+/* Reset y estilos base */
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #141414 0%, #181818 100%);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.container {
+  background: rgba(20, 20, 20, 0.95);
+  padding: 3rem 2.5rem 2.5rem 2.5rem;
+  border-radius: 12px;
+  width: 350px;
+  box-shadow: 0 8px 32px 0 rgba(20, 20, 20, 0.85), 0 0 0 2px #e50914;
+  border-top: 4px solid #e50914;
+  border-bottom: 2px solid #222;
+}
+
+/* Título */
+h1#form-title {
+  font-size: 2.6rem;
+  margin-bottom: 2rem;
+  color: #e50914;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 8px rgba(229, 9, 20, 0.2);
+}
+
+/* Formularios */
+form input {
+  width: 100%;
+  padding: 14px 16px;
+  margin: 12px 0;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.05rem;
+  background: #333;
+  color: #fff;
+  outline: none;
+  transition: background 0.2s;
+}
+
+form input:focus {
+  background: #444;
+}
+
+form button {
+  width: 100%;
+  background: linear-gradient(90deg, #e50914 60%, #b00610 100%);
+  border: none;
+  padding: 14px;
+  font-size: 1.2rem;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1.2rem;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.2);
+  transition: background 0.3s, transform 0.2s;
+}
+
+form button:hover {
+  background: #b00610;
+  transform: scale(1.03);
+}
+
+/* Mensajes de error o éxito */
+#login-message, #register-message {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #e87c03;
+  min-height: 22px;
+}
+
+/* Texto para cambiar entre login y registro */
+#switch-text {
+  margin-top: 1.8rem;
+  font-size: 1rem;
+  color: #b3b3b3;
+}
+
+.link {
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.link:hover {
+  color: #e50914;
+  text-decoration: underline;
+}
+
+/* Ocultar elementos con esta clase */
+.hidden {
+  display: none;
+}
+
+/* Contenedor de películas */
+#contenedor-peliculas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  justify-content: center;
+  padding: 32px;
+  max-width: 1200px;
+  margin: 48px auto 0 auto;
+  color: white;
+  background: rgba(20, 20, 20, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px 0 rgba(20, 20, 20, 0.7);
+}
+
+.pelicula {
+  background: linear-gradient(180deg, #222 60%, #181818 100%);
+  border-radius: 10px;
+  width: 210px;
+  padding: 12px;
+  box-shadow: 0 2px 12px rgba(229, 9, 20, 0.25);
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.pelicula:hover {
+  transform: scale(1.07);
+  box-shadow: 0 4px 24px rgba(229, 9, 20, 0.5);
+  z-index: 2;
+}
+
+.pelicula img {
+  width: 100%;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(20, 20, 20, 0.4);
+}
+
+.pelicula h3 {
+  font-size: 1.15rem;
+  margin: 0 0 8px 0;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(20, 20, 20, 0.4);
+}
+
+.pelicula p {
+  font-size: 0.97rem;
+  color: #b3b3b3;
+  height: 60px;
+  overflow: hidden;
+  margin: 0 0 12px 0;
+}
+
+.pelicula button {
+  background: linear-gradient(90deg, #e50914 60%, #b00610 100%);
+  border: none;
+  padding: 10px 0;
+  color: white;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  box-shadow: 0 1px 4px rgba(229, 9, 20, 0.15);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.pelicula button:hover {
+  background: #b00610;
+  transform: scale(1.04);
+}

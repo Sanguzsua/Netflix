@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Netflix Login / Registro</title>
+ <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1 id="form-title">Iniciar Sesión</h1>
+
+    <!-- Formulario Login -->
+    <form id="login-form">
+      <input type="email" id="login-email" placeholder="Correo electrónico" required />
+      <input type="password" id="login-password" placeholder="Contraseña" required />
+      <button type="submit">Iniciar Sesión</button>
+      <p id="login-message"></p>
+    </form>
+
+    <!-- Formulario Registro -->
+    <form id="register-form" class="hidden">
+      <input type="email" id="register-email" placeholder="Correo electrónico" required />
+      <input type="password" id="register-password" placeholder="Contraseña" required />
+      <button type="submit">Registrarse</button>
+      <p id="register-message"></p>
+    </form>
+
+    <p id="switch-text">
+      ¿Nuevo en Netflix? <span id="switch-link" class="link">Regístrate ahora</span>
+    </p>
+  </div>
+
+  <!-- Contenedor de películas, oculto hasta login exitoso -->
+  <div id="contenedor-peliculas" class="hidden"></div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
