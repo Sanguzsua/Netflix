@@ -86,7 +86,7 @@ async function cargarPeliculas() {
         <img src="${IMG_URL + pelicula.poster_path}" alt="${pelicula.title}" />
         <h3>${pelicula.title}</h3>
         <p>${pelicula.overview.substring(0, 150)}...</p>
-        <button onclick="alert('Aquí puedes poner la lógica para reproducir o más info')">Ver más</button>
+        <button onclick="alert('mu pronto')">Ver más</button>
       `
       peliculasContainer.appendChild(div)
     })
