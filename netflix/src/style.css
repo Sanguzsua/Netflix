@@ -362,3 +362,26 @@ form button:hover {
 .close-modal:hover {
   color: #fff;
 }
+
+/* Toast notifications */
+.toast {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #e50914;
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 16px rgba(20,20,20,0.25);
+  z-index: 9999;
+  opacity: 0.97;
+  transition: opacity 0.3s, top 0.3s;
+  pointer-events: none;
+}
+
+.toast.hidden {
+  display: none;
+}

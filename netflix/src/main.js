@@ -30,9 +30,9 @@ loginForm.addEventListener('submit', async (e) => {
   const { data, error } = await supabase.auth.signInWithPassword({ email, password })
 
   if (error) {
-    alert('Error al iniciar sesión: ' + error.message)
+    showToast('Error al iniciar sesión: ' + error.message)
   } else {
-    alert('¡Inicio de sesión exitoso!')
+    showToast('¡Inicio de sesión exitoso!', '#e50914')
     loginContainer.style.display = 'none'
     peliculasContainer.style.display = 'flex'
     cargarPeliculas()
@@ -49,9 +49,9 @@ registerForm.addEventListener('submit', async (e) => {
   const { data, error } = await supabase.auth.signUp({ email, password })
 
   if (error) {
-    alert('Error al registrarse: ' + error.message)
+    showToast('Error al registrarse: ' + error.message)
   } else {
-    alert('¡Registro exitoso! Ahora inicia sesión.')
+    showToast('¡Registro exitoso! Ahora inicia sesión.', '#e50914')
     formTitle.textContent = 'Iniciar Sesión'
     registerForm.classList.add('hidden')
     loginForm.classList.remove('hidden')
@@ -178,7 +178,7 @@ menuInicio.addEventListener('click', async (e) => {
   await cargarPeliculas(API_URL)
 })
 
-// Películas: populares (puedes cambiar la URL si quieres otro filtro)
+// Películas: populares 
 menuPeliculas.addEventListener('click', async (e) => {
   e.preventDefault()
   setActiveMenu(menuPeliculas)
@@ -201,14 +201,14 @@ menuNovedades.addEventListener('click', async (e) => {
   await cargarPeliculas(url)
 })
 
-// Mi lista: puedes mostrar un mensaje o tu lógica personalizada
+
 menuLista.addEventListener('click', (e) => {
   e.preventDefault()
   setActiveMenu(menuLista)
   peliculasContainer.innerHTML = '<p style="color:#fff;">Funcionalidad de "Mi lista" próximamente.</p>'
 })
 
-// Si quieres mostrar series, crea una función similar a cargarPeliculas:
+
 async function cargarSeries(url) {
   try {
     const respuesta = await fetch(url)
@@ -238,4 +238,14 @@ async function cargarSeries(url) {
     peliculasContainer.innerHTML = '<p>Hubo un error cargando las series.</p>'
     console.error(error)
   }
+}
+
+function showToast(message, color = '#e50914') {
+  const toast = document.getElementById('toast')
+  toast.textContent = message
+  toast.style.background = color
+  toast.classList.remove('hidden')
+  setTimeout(() => {
+    toast.classList.add('hidden')
+  }, 2500)
 }
