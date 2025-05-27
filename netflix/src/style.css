@@ -1,25 +1,51 @@
 /* Reset y estilos base */
 body {
   margin: 0;
+  min-height: 100vh;
+  width: 100vw;
   background: linear-gradient(180deg, #141414 0%, #181818 100%);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #fff;
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
+  /* Elimina el text-align aquí para evitar centrar todo el texto globalmente */
   letter-spacing: 0.02em;
+  overflow-x: hidden;
 }
 
 .container {
-  background: rgba(20, 20, 20, 0.95);
+  background: rgba(20, 20, 20, 0.97);
   padding: 3rem 2.5rem 2.5rem 2.5rem;
-  border-radius: 12px;
-  width: 350px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 370px;
   box-shadow: 0 8px 32px 0 rgba(20, 20, 20, 0.85), 0 0 0 2px #e50914;
   border-top: 4px solid #e50914;
   border-bottom: 2px solid #222;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Centrado absoluto en pantalla */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 2rem 1rem 1.5rem 1rem;
+    max-width: 98vw;
+  }
+}
+
+/* Centra el formulario y el título dentro del container */
+.container h1,
+.container form {
+  width: 100%;
+  text-align: center;
 }
 
 /* Título */
@@ -176,4 +202,163 @@ form button:hover {
 .pelicula button:hover {
   background: #b00610;
   transform: scale(1.04);
+}
+
+/* Header estilo Netflix */
+.netflix-header {
+  width: 100vw;
+  min-width: 320px;
+  background: rgba(20, 20, 20, 0.98);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5vw;
+  height: 64px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(20,20,20,0.25);
+}
+
+.logo img {
+  height: 38px;
+  margin-right: 18px;
+}
+
+.nav-menu {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.08rem;
+  transition: color 0.2s;
+  padding: 4px 0;
+  position: relative;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  color: #e50914;
+}
+
+.nav-link.active::after,
+.nav-link:hover::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: #e50914;
+  width: 100%;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  border-radius: 2px;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  background: #222;
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
+.search-input {
+  background: #222;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  padding: 6px 4px;
+  outline: none;
+  border-radius: 4px;
+  width: 160px;
+  transition: width 0.3s;
+}
+
+.search-input:focus {
+  width: 180px;
+}
+
+.search-btn {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .netflix-header {
+    flex-direction: column;
+    height: auto;
+    padding: 10px 2vw;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .nav-menu {
+    gap: 1rem;
+    font-size: 0.97rem;
+  }
+  .search-input {
+    width: 90px;
+  }
+  .search-input:focus {
+    width: 130px;
+  }
+}
+
+/* Estilos para el modal */
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(20,20,20,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #181818;
+  border-radius: 12px;
+  padding: 1.2rem 1rem 1.2rem 1rem;
+  max-width: 320px;
+  width: 92vw;
+  box-shadow: 0 8px 32px rgba(20,20,20,0.9);
+  color: #fff;
+  text-align: center;
+  position: relative;
+  animation: modalIn 0.25s;
+}
+
+@keyframes modalIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.modal-content img {
+  width: 90%;
+  max-width: 180px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 12px rgba(229,9,20,0.15);
+}
+
+.close-modal {
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  font-size: 1.6rem;
+  color: #e50914;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.close-modal:hover {
+  color: #fff;
 }

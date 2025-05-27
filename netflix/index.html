@@ -7,6 +7,26 @@
  <link rel="stylesheet" href="./src/style.css" />
 </head>
 <body>
+  <!-- Header estilo Netflix -->
+  <header class="netflix-header">
+    <div class="logo">
+      <img src="https://assets.nflxext.com/ffe/siteui/common/icons/nficon2016.png" alt="Netflix" />
+    </div>
+    <nav class="nav-menu">
+      <a href="#" class="nav-link active" id="menu-inicio">Inicio</a>
+      <a href="#" class="nav-link" id="menu-series">Series</a>
+      <a href="#" class="nav-link" id="menu-peliculas">Películas</a>
+      <a href="#" class="nav-link" id="menu-novedades">Novedades</a>
+      <a href="#" class="nav-link" id="menu-lista">Mi lista</a>
+    </nav>
+    <form class="search-form" id="category-form" autocomplete="off">
+      <select class="search-input" id="category-select">
+        <option value="">Todas las categorías</option>
+      </select>
+      <button type="submit" class="search-btn">&#128269;</button>
+    </form>
+  </header>
+
   <div class="container">
     <h1 id="form-title">Iniciar Sesión</h1>
 
@@ -33,6 +53,16 @@
 
   <!-- Contenedor de películas, oculto hasta login exitoso -->
   <div id="contenedor-peliculas" class="hidden"></div>
+
+  <!-- Modal para detalles de la película -->
+  <div id="modal-pelicula" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <img id="modal-img" src="" alt="" />
+      <h2 id="modal-title"></h2>
+      <p id="modal-desc"></p>
+    </div>
+  </div>
 
   <script type="module" src="./src/main.js"></script>
 </body>
