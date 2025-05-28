@@ -130,6 +130,9 @@ function setActiveMenu(menu) {
   menu.classList.add('active')
 }
 
+let peliculaActual = null; // Guardará la película/serie mostrada en el modal
+const addToListBtn = document.getElementById('add-to-list-btn');
+
 async function cargarPeliculas(url = API_URL) {
   try {
     const respuesta = await fetch(url)
@@ -153,6 +156,43 @@ async function cargarPeliculas(url = API_URL) {
         modalTitle.textContent = pelicula.title
         modalDesc.textContent = pelicula.overview || 'Sin descripción disponible.'
         modal.classList.remove('hidden')
+        peliculaActual = {
+          id: pelicula.id,
+          title: pelicula.title,
+          overview: pelicula.overview,
+          poster_path: pelicula.poster_path,
+          type: 'movie'
+        }
+        addToListBtn.textContent = 'Agregar a Mi Lista'
+        addToListBtn.onclick = addToListHandler
+
+        // Agrega o muestra el botón de trailer
+        let trailerBtn = document.getElementById('trailer-btn')
+        if (!trailerBtn) {
+          trailerBtn = document.createElement('button')
+          trailerBtn.id = 'trailer-btn'
+          trailerBtn.className = 'add-list-btn'
+          trailerBtn.style.marginTop = '10px'
+          addToListBtn.parentNode.insertBefore(trailerBtn, addToListBtn.nextSibling)
+        }
+        trailerBtn.textContent = 'Ver trailer'
+        trailerBtn.onclick = async () => {
+          trailerBtn.textContent = 'Cargando...'
+          const url = await obtenerTrailer(pelicula.id, 'movie')
+          trailerBtn.textContent = url ? 'Ver trailer' : 'No disponible'
+          const trailerContainer = document.getElementById('trailer-container')
+          const trailerIframe = document.getElementById('trailer-iframe')
+          if (url) {
+            // Extrae el ID del video de YouTube
+            const videoId = url.split('v=')[1]
+            trailerIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`
+            trailerContainer.style.display = 'block'
+          } else {
+            trailerContainer.style.display = 'none'
+            trailerIframe.src = ''
+            showToast('Trailer no disponible', '#e87c03')
+          }
+        }
       })
       peliculasContainer.appendChild(div)
     })
@@ -163,10 +203,18 @@ async function cargarPeliculas(url = API_URL) {
 }
 
 // Cerrar modal al hacer click en la X o fuera del contenido
-closeModal.addEventListener('click', () => modal.classList.add('hidden'))
+closeModal.addEventListener('click', () => {
+  modal.classList.add('hidden');
+  document.getElementById('trailer-iframe').src = '';
+  document.getElementById('trailer-container').style.display = 'none';
+});
 modal.addEventListener('click', (e) => {
-  if (e.target === modal) modal.classList.add('hidden')
-})
+  if (e.target === modal) {
+    modal.classList.add('hidden');
+    document.getElementById('trailer-iframe').src = '';
+    document.getElementById('trailer-container').style.display = 'none';
+  }
+});
 
 // Llama a cargarCategorias al iniciar
 cargarCategorias()
@@ -203,10 +251,66 @@ menuNovedades.addEventListener('click', async (e) => {
 
 
 menuLista.addEventListener('click', (e) => {
-  e.preventDefault()
-  setActiveMenu(menuLista)
-  peliculasContainer.innerHTML = '<p style="color:#fff;">Funcionalidad de "Mi lista" próximamente.</p>'
-})
+  e.preventDefault();
+  setActiveMenu(menuLista);
+  let miLista = JSON.parse(localStorage.getItem('miListaNetflix')) || [];
+  peliculasContainer.innerHTML = '';
+  if (miLista.length === 0) {
+    peliculasContainer.innerHTML = '<p style="color:#fff;">Tu lista está vacía.</p>';
+    return;
+  }
+  miLista.forEach(item => {
+    const div = document.createElement('div');
+    div.classList.add('pelicula');
+    div.innerHTML = `
+      <img src="${IMG_URL + item.poster_path}" alt="${item.title}" />
+      <h3>${item.title}</h3>
+      <p>${item.overview.substring(0, 150)}...</p>
+      <button class="ver-mas-btn">Ver más</button>
+    `;
+    div.querySelector('.ver-mas-btn').addEventListener('click', () => {
+      modalImg.src = IMG_URL + item.poster_path;
+      modalTitle.textContent = item.title;
+      modalDesc.textContent = item.overview || 'Sin descripción disponible.';
+      modal.classList.remove('hidden');
+      peliculaActual = item;
+
+      // Cambia el texto y función del botón
+      addToListBtn.textContent = 'Borrar de Mi Lista';
+      addToListBtn.onclick = () => {
+        let miLista = JSON.parse(localStorage.getItem('miListaNetflix')) || [];
+        miLista = miLista.filter(p => !(p.id === item.id && p.type === item.type));
+        localStorage.setItem('miListaNetflix', JSON.stringify(miLista));
+        showToast('Eliminado de tu lista', '#e50914');
+        modal.classList.add('hidden');
+        // Refresca la lista en pantalla
+        menuLista.click();
+      };
+
+      // Trailer
+      const trailerBtn = document.getElementById('trailer-btn');
+      trailerBtn.textContent = 'Ver trailer';
+      trailerBtn.onclick = async () => {
+        trailerBtn.textContent = 'Cargando...';
+        const url = await obtenerTrailer(item.id, item.type === 'movie' ? 'movie' : 'serie');
+        trailerBtn.textContent = url ? 'Ver trailer' : 'No disponible';
+        const trailerContainer = document.getElementById('trailer-container');
+        const trailerIframe = document.getElementById('trailer-iframe');
+        if (url) {
+          // Extrae el ID del video de YouTube
+          const videoId = url.split('v=')[1];
+          trailerIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+          trailerContainer.style.display = 'block';
+        } else {
+          trailerContainer.style.display = 'none';
+          trailerIframe.src = '';
+          showToast('Trailer no disponible', '#e87c03');
+        }
+      };
+    });
+    peliculasContainer.appendChild(div);
+  });
+});
 
 
 async function cargarSeries(url) {
@@ -231,6 +335,13 @@ async function cargarSeries(url) {
         modalTitle.textContent = serie.name
         modalDesc.textContent = serie.overview || 'Sin descripción disponible.'
         modal.classList.remove('hidden')
+        peliculaActual = {
+          id: serie.id,
+          title: serie.name,
+          overview: serie.overview,
+          poster_path: serie.poster_path,
+          type: 'serie'
+        }
       })
       peliculasContainer.appendChild(div)
     })
@@ -248,4 +359,31 @@ function showToast(message, color = '#e50914') {
   setTimeout(() => {
     toast.classList.add('hidden')
   }, 2500)
+}
+
+function addToListHandler() {
+  if (!peliculaActual) return;
+  let miLista = JSON.parse(localStorage.getItem('miListaNetflix')) || [];
+  if (!miLista.some(item => item.id === peliculaActual.id && item.type === peliculaActual.type)) {
+    miLista.push(peliculaActual);
+    localStorage.setItem('miListaNetflix', JSON.stringify(miLista));
+    showToast('¡Agregado a Mi Lista!', '#b00610');
+  } else {
+    showToast('Ya está en tu lista.', '#e87c03');
+  }
+}
+
+async function obtenerTrailer(id, tipo = 'movie') {
+  const url = `https://api.themoviedb.org/3/${tipo}/${id}/videos?api_key=${API_KEY}&language=es-ES`
+  try {
+    const res = await fetch(url)
+    const data = await res.json()
+    // Busca el primer trailer de YouTube
+    const trailer = data.results.find(
+      v => v.type === 'Trailer' && v.site === 'YouTube'
+    )
+    return trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null
+  } catch (error) {
+    return null
+  }
 }
