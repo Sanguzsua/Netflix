@@ -123,6 +123,12 @@ const menuSeries = document.getElementById('menu-series')
 const menuPeliculas = document.getElementById('menu-peliculas')
 const menuNovedades = document.getElementById('menu-novedades')
 const menuLista = document.getElementById('menu-lista')
+const menuPerfil = document.getElementById('menu-perfil');
+const modalPerfil = document.getElementById('modal-perfil');
+const closeModalPerfil = document.querySelector('.close-modal-perfil');
+const perfilForm = document.getElementById('perfil-form');
+const perfilEmail = document.getElementById('perfil-email');
+const perfilNombre = document.getElementById('perfil-nombre');
 
 // Función para cambiar la pestaña activa
 function setActiveMenu(menu) {
@@ -387,3 +393,52 @@ async function obtenerTrailer(id, tipo = 'movie') {
     return null
   }
 }
+
+menuPerfil.addEventListener('click', async (e) => {
+  e.preventDefault();
+  setActiveMenu(menuPerfil);
+  // Obtén el usuario actual de Supabase
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    perfilEmail.value = user.email || '';
+    // Puedes guardar el nombre en user.user_metadata.nombre o similar
+    perfilNombre.value = user.user_metadata?.nombre || '';
+    modalPerfil.classList.remove('hidden');
+  } else {
+    showToast('Debes iniciar sesión para ver tu perfil');
+  }
+});
+
+closeModalPerfil.addEventListener('click', () => {
+  modalPerfil.classList.add('hidden');
+});
+modalPerfil.addEventListener('click', (e) => {
+  if (e.target === modalPerfil) {
+    modalPerfil.classList.add('hidden');
+  }
+});
+perfilForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const nombre = perfilNombre.value;
+  // Actualiza el user_metadata en Supabase
+  const { data, error } = await supabase.auth.updateUser({
+    data: { nombre }
+  });
+  if (error) {
+    showToast('Error al actualizar perfil: ' + error.message);
+  } else {
+    showToast('Perfil actualizado', '#43b581');
+    modalPerfil.classList.add('hidden');
+  }
+});
+
+const logoutBtn = document.getElementById('logout-btn');
+
+logoutBtn.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  showToast('Sesión cerrada', '#e50914');
+  modalPerfil.classList.add('hidden');
+  // Opcional: recarga la página o muestra el login
+  loginContainer.style.display = 'flex';
+  peliculasContainer.style.display = 'none';
+});

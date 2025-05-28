@@ -363,6 +363,40 @@ form button:hover {
   color: #fff;
 }
 
+/* Nueva clase para el modal de perfil */
+.close-modal-perfil {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 2rem;
+  color: #e50914;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.close-modal-perfil:hover {
+  color: #fff;
+}
+
+#perfil-form input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+  margin-bottom: 10px;
+  background: #222;
+  color: #fff;
+}
+
+#perfil-form label {
+  display: block;
+  text-align: left;
+  margin-bottom: 4px;
+  color: #b3b3b3;
+  font-size: 0.97rem;
+}
+
 /* Toast notifications */
 .toast {
   position: fixed;
